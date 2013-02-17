@@ -11,8 +11,32 @@ public class MeowBot extends PircBot{
 	
 	public void onMessage(String channel, String sender, 
 			String login, String hostname, String message) {
+		String[] args = message.split(" ");
 		if(message.startsWith("!awesome")) {
 			this.sendMessage(channel, "I am awesome");
+		}
+		else if(args[0].equalsIgnoreCase("!cookie")) {
+			if(args.length == 1) {
+				this.sendAction(channel, "gives everyone a cookie!");
+			}
+			else if(args.length == 2) {
+				this.sendAction(channel, "gives "+args[1]+" a cookie!");
+			}
+			else {
+				StringBuilder sb = new StringBuilder();
+				for(String arg:args) {
+					if(!arg.equalsIgnoreCase(args[0])) {
+						sb.append(arg).append(", ");
+					}
+				}
+				this.sendAction(channel, "gives "+sb.toString()+" cookies!");
+			}
+		}
+		else if(message.startsWith("!ping")) {
+			this.sendMessage(channel, "PONG!");
+		}
+		else if(message.startsWith("!")) {
+			this.sendAction(channel, "wouldn't do that...");
 		}
 	}
 	
@@ -62,8 +86,6 @@ public class MeowBot extends PircBot{
 	
 	public void onJoin(String channel, String sender, String login, String hostname) {
 		if(sender.equalsIgnoreCase(this.getNick())) {
-			this.sendMessage(channel, "Hello, I am SmartBot, and I have come to this channel to loiter...");
-			this.sendMessage(channel, "I am smart also, ask me a question.");
 		}
 	}
 }
